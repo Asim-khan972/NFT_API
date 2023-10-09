@@ -4,21 +4,16 @@ const mongoose = require("mongoose");
 const NFT = require("./../../models/nftModel");
 
 dotenv.config({ path: "./config.env" });
-const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD
-);
-
+const DB = process.env.MONGO_URI;
+console.log(DB);
 mongoose
-  .connect(DB, {
+  .connect(" mongodb+srv://Asim:asim@cluster0.66avo7o.mongodb.net/", {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,
   })
-  .then((con) => {
-    // console.log(con.connection);
-    console.log("DB Connection Successfully");
-  });
+  .then((con) => console.log("DB Connected "))
+  .catch((err) => console.log(err));
 
 const nfts = JSON.parse(
   fs.readFileSync(`${__dirname}/nft-simple.json`, "utf-8")
