@@ -1,6 +1,12 @@
 const app = require("./app");
 const mongoose = require("mongoose");
 
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
 const DBUrl = process.env.MONGO_URI;
 console.log(DBUrl);
 
@@ -16,4 +22,12 @@ mongoose
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
